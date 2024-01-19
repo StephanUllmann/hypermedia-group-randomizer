@@ -118,7 +118,7 @@ func BatchSearch(batchName string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" name=\"batch\" id=\"new-batch\" placeholder=\"Search or create Batch...\" pattern=\"((wd|WD)|(wdg|WDG))\\d{3}\" hx-swap=\"outerHTML transition:true\" hx-select=\".content\" hx-get=\"/get-batch\" hx-trigger=\"search, keyup changed delay:100ms\" hx-push-url=\"true\"> <span>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" name=\"batch\" id=\"new-batch\" placeholder=\"Search or create Batch...\" pattern=\"((wd|WD)|(wdg|WDG))\\d{3}\" hx-swap=\"outerHTML transition:true\" hx-select=\".content\" hx-get=\"/get-batch\" hx-trigger=\"search, keyup changed delay:250ms\" hx-push-url=\"true\"> <span>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
