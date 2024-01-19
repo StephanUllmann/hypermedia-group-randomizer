@@ -59,27 +59,7 @@ func (s *FiberServer) CreateProject(c *fiber.Ctx) error {
 		return handler(c)
 	}
 
-	var groupArr [][]string
-	for _, group := range foundGroups {
-		groupArr = append(groupArr, strings.Split(group.Names, ","))
-	}
-	newGroup := utils.ShuffleGroups(groupArr)
-	groups := utils.SortToGroups(newGroup, numOfGroups)
-	fmt.Println(groups)
-	fmt.Printf("numOfGroups: %v\n", numOfGroups)
-	fmt.Println("groupArr: ", groupArr)
-	fmt.Println("project: ", project)
-
-	newGroupString := strings.Join(newGroup, ",")
-	group1 := strings.Join(groups[0], ",")
-	group2 := strings.Join(groups[1], ",")
-	group3 := strings.Join(groups[2], ",")
-	group4 := strings.Join(groups[3], ",")
-	group5 := strings.Join(groups[4], ",")
-	group6 := strings.Join(groups[5], ",")
-	group7 := strings.Join(groups[6], ",")
-
-	newEntry := database.Groups{Batch: batch, Names: newGroupString, Group1: group1, Group2: group2, Group3: group3, Group4: group4, Group5: group5, Group6: group6, Group7: group7, Project: project, IsBase: false}
+	newEntry := utils.GroupsToEntry(foundGroups, numOfGroups, batch, project)
 
 	result := database.DB.Create(&newEntry)
 	if result.Error != nil {
@@ -91,5 +71,45 @@ func (s *FiberServer) CreateProject(c *fiber.Ctx) error {
 	displayGroups := utils.GroupsStringsToDisplay(newEntry)
 	delays := utils.AddAnimationDelay(displayGroups)
 	handler := adaptor.HTTPHandler(templ.Handler(web.ExistingProject(newEntry.Batch, newEntry.Project, displayGroups, delays)))
+	return handler(c)
+}
+
+// Shuffle Project
+func (s *FiberServer) ShuffleProject(c *fiber.Ctx) error {
+	batchName := c.Params("batchName")
+	projectName := c.Params("projectName")
+
+	var foundGroups []database.Groups
+
+	err := database.DB.Table("groups").Where("batch = ?", batchName).Find(&foundGroups).Error
+	if err != nil {
+		fmt.Println("Error: ", err)
+		handler := adaptor.HTTPHandler(templ.Handler(web.Message("Creating Project failed", "error")))
+		return handler(c)
+	}
+
+	idx := slices.IndexFunc(foundGroups, func (group database.Groups) bool {
+		return strings.EqualFold(group.Project, projectName)
+	})
+
+	var numOfGroups int
+	groups := []string{foundGroups[idx].Group1, foundGroups[idx].Group2, foundGroups[idx].Group3, foundGroups[idx].Group4, foundGroups[idx].Group5, foundGroups[idx].Group6, foundGroups[idx].Group7}
+
+	for _, group := range groups {
+		if group != "" {
+			numOfGroups++
+		}
+	}
+
+	patchedEntry := utils.GroupsToEntry(foundGroups, numOfGroups, batchName, projectName)
+	patchedEntry.ID = foundGroups[idx].ID
+
+	result := database.DB.Save(&patchedEntry)
+	fmt.Println(result)
+
+
+	displayGroups := utils.GroupsStringsToDisplay(patchedEntry)
+	delays := utils.AddAnimationDelay(displayGroups)
+	handler := adaptor.HTTPHandler(templ.Handler(web.ExistingProject(patchedEntry.Batch, patchedEntry.Project, displayGroups, delays)))
 	return handler(c)
 }

@@ -31,4 +31,7 @@ func (s *FiberServer) RegisterFiberRoutes() {
 	s.App.Get("/project", s.GetCreateProjectForm)
 	s.App.Get("/project/q", s.CreateProject)
 
+	// Shuffle Project
+	s.App.Put("/project/:batchName/:projectName", s.ShuffleProject)
+
 }

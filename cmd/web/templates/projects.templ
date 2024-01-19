@@ -76,6 +76,10 @@ templ ExistingProject(batch string, project string, groups [][]string, delays []
       </div>
     }
   </div>
-  <button class="btn-form right">Shuffle</button>
+  <button class="btn-form right"
+          hx-put={fmt.Sprintf("/project/%v/%v", batch, project)}
+          hx-target="body"
+          hx-swap="innerHTML transition:true">
+          Shuffle</button>
   }
 }

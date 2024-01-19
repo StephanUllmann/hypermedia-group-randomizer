@@ -136,3 +136,25 @@ func AddAnimationDelay(group [][]string) [][]templ.Attributes {
 	return out
 }
 
+func GroupsToEntry(foundGroups []database.Groups, numOfGroups int, batchName string, projectName string) database.Groups {
+	var groupArr [][]string
+	for _, group := range foundGroups {
+		groupArr = append(groupArr, strings.Split(group.Names, ","))
+	}
+	newGroup := ShuffleGroups(groupArr)
+	groups := SortToGroups(newGroup, numOfGroups)
+	
+
+	newGroupString := strings.Join(newGroup, ",")
+	group1 := strings.Join(groups[0], ",")
+	group2 := strings.Join(groups[1], ",")
+	group3 := strings.Join(groups[2], ",")
+	group4 := strings.Join(groups[3], ",")
+	group5 := strings.Join(groups[4], ",")
+	group6 := strings.Join(groups[5], ",")
+	group7 := strings.Join(groups[6], ",")
+
+	entry := database.Groups{Batch: batchName, Names: newGroupString, Group1: group1, Group2: group2, Group3: group3, Group4: group4, Group5: group5, Group6: group6, Group7: group7, Project: projectName, IsBase: false}
+
+	return entry
+}
