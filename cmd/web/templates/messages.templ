@@ -1,0 +1,24 @@
+package web
+
+templ Message(message string, class string) {
+  <div hx-swap-oob="beforeend:body">
+    <p class={class} hx-target="this" hx-swap="outerHTML" hx-trigger="revealed delay:2000ms" hx-delete="/name">{message}</p>
+  </div>
+}
+
+templ MessageAndButtons(message string, class string, batchName string) {
+  @Message(message, class)
+  <div hx-swap-oob="afterend:#add-name">
+    @EditButtons(batchName)
+  </div>
+}
+
+templ MessageAndManageBatches(message string, class string) {
+  @Content(true, false) {
+    <section class="content">
+      <h1 class="heading-createBatch" id="main-heading">Create Batch</h1>
+      @BatchSearch("")
+      @Message(message, class)
+    </section>
+  }
+}

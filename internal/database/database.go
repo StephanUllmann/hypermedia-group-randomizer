@@ -1,50 +1,36 @@
 package database
 
 import (
-	"context"
-	"database/sql"
 	"fmt"
-	"log"
-	"os"
-	"time"
 
-	_ "github.com/joho/godotenv/autoload"
-	_ "github.com/mattn/go-sqlite3"
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
 )
 
-type Service interface {
-	Health() map[string]string
+type Groups struct {
+	gorm.Model
+	Batch   string
+	Names   string
+	IsBase  bool
+	Project string
+	Group1  string
+	Group2  string
+	Group3  string
+	Group4  string
+	Group5  string
+	Group6  string
+	Group7  string
 }
 
-type service struct {
-	db *sql.DB
-}
+var DB *gorm.DB
 
-var (
-	dburl = os.Getenv("DB_URL")
-)
-
-func New() Service {
-	db, err := sql.Open("sqlite3", dburl)
+func InitDB() *gorm.DB {
+	var err error
+	DB, err = gorm.Open(sqlite.Open("groups.db"), &gorm.Config{})
 	if err != nil {
-		// This will not be a connection error, but a DSN parse error or
-		// another initialization error.
-		log.Fatal(err)
+		panic("failed to connect database")
 	}
-	s := &service{db: db}
-	return s
-}
-
-func (s *service) Health() map[string]string {
-	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
-	defer cancel()
-
-	err := s.db.PingContext(ctx)
-	if err != nil {
-		log.Fatalf(fmt.Sprintf("db down: %v", err))
-	}
-
-	return map[string]string{
-		"message": "It's healthy",
-	}
+	DB.AutoMigrate(&Groups{})
+	fmt.Println("Connection Opened to Database and Migrated")
+	return DB
 }

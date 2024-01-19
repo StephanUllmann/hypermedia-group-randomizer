@@ -1,19 +1,21 @@
 package server
 
 import (
-	"github.com/gofiber/fiber/v2"
 	"hm-group-randomizer/internal/database"
+
+	"github.com/gofiber/fiber/v2"
+	"gorm.io/gorm"
 )
 
 type FiberServer struct {
 	*fiber.App
-	db database.Service
+	db *gorm.DB
 }
 
 func New() *FiberServer {
 	server := &FiberServer{
 		App: fiber.New(),
-		db:  database.New(),
+		db:  database.InitDB(),
 	}
 
 	return server

@@ -1,0 +1,81 @@
+package web
+
+import "fmt"
+
+templ CreateProject() {
+  @Content(false, true) {
+    <section class="content">
+      <h1 class="heading-createProject">Manage Projects</h1>
+      <form action="/project/q"
+            method="GET"
+            hx-get="/project/q"
+            hx-target="body"
+            hx-swap="innerHTML transition:true"
+            hx-push-url="true">
+        <label>Project
+          <input type="text"
+                 name="project"
+                 id="project"
+                 placeholder="Search or input Project..." />
+        </label>
+        <button class="btn-form">GO</button>
+        <label style="view-transition-name:batch-input;">
+          <input type="text"
+                name="batch" 
+                id="batch-project"
+                placeholder="Search or input Batch..."  
+                pattern="((wd|WD)|(wdg|WDG))\\d{3}"/>
+          Batch 
+          <span>Format: wd012 or wdg012</span>
+        </label>
+        <br/>
+        <label># of Groups
+          <input type="number"
+                 name="number"
+                 id="number"
+                 list="number-list"
+                 value="5"
+                 min="2"
+                 max="7"
+                 placeholder="Number of Groups..." />
+          <datalist id="number-list">
+            <option value="2" />
+            <option value="3" />
+            <option value="4" />
+            <option value="5" />
+            <option value="6" />
+            <option value="7" />
+          </datalist>
+        </label>
+      </form>
+      <div id="results">{children...}</div>
+    </section>
+  }
+}
+
+templ ExistingProject(batch string, project string, groups [][]string, delays [][]templ.Attributes){
+  @CreateProject() {
+  <div class="project__heading">
+    <h2>Project: {project}</h2>
+    <h3>Batch: {batch}</h3>
+  </div>
+  <div class="project">
+
+    for i, group := range groups {
+      <div class="project__group">
+        <h4 class="project__group-h">Group {fmt.Sprintf("%d", i + 1)}</h4>
+        <ul class="project__group-ul">
+          for j, name := range group {
+            if delays != nil {
+              <li class="fade-in" {delays[i][j]...}>{name}</li>
+            } else {
+              <li>{name}</li>
+            }
+          }
+        </ul>
+      </div>
+    }
+  </div>
+  <button class="btn-form right">Shuffle</button>
+  }
+}

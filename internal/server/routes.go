@@ -1,32 +1,34 @@
 package server
 
 import (
-	"github.com/a-h/templ"
+	"net/http"
+
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/adaptor"
-	"hm-group-randomizer/cmd/web"
 )
 
 func (s *FiberServer) RegisterFiberRoutes() {
-	s.App.Get("/", s.HelloWorldHandler)
-	s.App.Get("/health", s.healthHandler)
+	s.App.Static("/static", "./cmd/web/static")
 
-	s.App.Static("/js", "./cmd/web/js")
-
-	s.App.Get("/web", adaptor.HTTPHandler(templ.Handler(web.HelloForm())))
-
-	s.App.Post("/hello", func(c *fiber.Ctx) error {
-		return web.HelloWebHandler(c)
+	// Create Batch
+	s.App.Get("/", s.GetCreateBatchForm)
+	s.App.Get("/get-batch", s.GetBatch)
+	s.App.Get("/add-name", func(c *fiber.Ctx) error {
+		return c.Redirect("/", http.StatusMovedPermanently)
 	})
-}
+	s.App.Post("/add-name", s.AddName)
+	s.App.Delete("/name", s.RemoveName)
+	s.App.Post("/create-batch", s.CreateBatch)
 
-func (s *FiberServer) HelloWorldHandler(c *fiber.Ctx) error {
-	resp := map[string]string{
-		"message": "Hello World",
-	}
-	return c.JSON(resp)
-}
+	// Edit Batch
+	// s.App.Get("/edit", s.GetFindBatchEditForm)
+	// s.App.Get("/edit/form", s.GetEditBatchForm)
+	s.App.Put("/edit-batch", s.EditBatch)
 
-func (s *FiberServer) healthHandler(c *fiber.Ctx) error {
-	return c.JSON(s.db.Health())
+	// Delete Batch
+	s.App.Delete("/batch/:batchName", s.DeleteBatch)
+
+	// Create Project
+	s.App.Get("/project", s.GetCreateProjectForm)
+	s.App.Get("/project/q", s.CreateProject)
+
 }

@@ -1,0 +1,29 @@
+package web
+
+css active() {
+  text-decoration: underline;
+}
+
+templ Content(home bool, project bool) {
+  @Base(){
+				<header>
+					<nav>
+						<ul>
+							<li><a  class={templ.KV(active(), home)} href="/" hx-swap="outerHTML transition:true" hx-target="body" >Batch</a></li>
+							// <li><a  class={templ.KV(active(), edit)} href="/edit">Edit Batch</a></li>
+							<li><a  class={templ.KV(active(), project)} href="/project" hx-swap="outerHTML transition:true" hx-target="body" >Project</a></li>
+						</ul>
+						// <search>
+						// 	<form>
+						// 		<input type="search" name="q" placeholder="Batch or Project"/>
+						// 		<button>Search</button>
+						// 	</form>
+						// </search>
+					</nav>
+				</header>
+    		<main>
+          {children...}
+        </main>
+  }
+
+}

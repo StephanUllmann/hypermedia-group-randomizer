@@ -1,0 +1,169 @@
+package web
+
+import "fmt"
+
+
+// templ CreateBatch() {
+//   @Content(true, false, false) {
+//     <section class="content">
+//       <h1 class="heading-createBatch" id="main-heading">Create Batch</h1>
+//       <label>Batch
+//         <input type="text" name="batch" id="new-batch" placeholder="New Batch..."  pattern="((wd|WD)|(wdg|WDG))\\d{3}"/>
+//         <span>Format: wd012 or wdg012</span></label>
+//       <form action="/add-name" method="post" hx-swap="beforeend" hx-target="#batch-collector" id="add-name">
+//         <label >Next Name
+//          <input type="text" name="next_name" id="next_name" value="" />
+//         </label>
+//         <button class="btn-add">Add</button>
+//       </form>
+//       <button class="btn-form" id="create-batch-btn" disabled >Create Batch</button>
+//       <div  id="batch-collector">
+//       </div>
+//     </section>
+//   }
+// }
+
+templ BatchInput() {
+  @Content(true, false) {
+    <section class="content">
+      <h1 class="heading-createBatch">Manage Batches</h1>
+      @BatchSearch("")
+    </section>
+  }
+}
+
+templ BatchSearch(batchName string) {
+  <search class="search" style="view-transition-name:batch-input;">
+    <form action="/get-batch"
+          method="GET"
+          hx-target="closest .content"
+          hx-select=".content"
+          hx-swap="outerHTML transition:true"
+          hx-get="/get-batch"
+          hx-push-url="true">
+      <label >Batch
+        <input type="text" 
+                value={batchName}
+                name="batch" 
+                id="new-batch" 
+                placeholder="Search or create Batch..."  
+                pattern="((wd|WD)|(wdg|WDG))\\d{3}"
+                hx-swap="outerHTML transition:true"
+                hx-select=".content"
+                hx-get="/get-batch"
+                hx-trigger="search, keyup changed delay:100ms"
+                hx-push-url="true"
+                />
+        <span>Format: wd012 or wdg012</span>
+      </label>
+      <button class="btn btn-icon" type="submit" >
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <title>Search</title>
+        <path d="M18.5 18.5L22 22" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M6.75 3.27093C8.14732 2.46262 9.76964 2 11.5 2C16.7467 2 21 6.25329 21 11.5C21 16.7467 16.7467 21 11.5 21C6.25329 21 2 16.7467 2 11.5C2 9.76964 2.46262 8.14732 3.27093 6.75" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+      </form>
+    </search>
+}
+
+
+templ BatchCollector(batchName string, names []string, transitionNames []templ.Attributes) {
+  @Content(true, false) {
+
+  <section class="content">
+      <h1 class="heading-createBatch" id="main-heading">Create Batch</h1>
+      @BatchSearch(batchName)
+      <form action="/add-name" method="post" hx-swap="beforeend" hx-target="#batch-collector form" id="add-name">
+        @AddNameInput()
+      </form>
+      
+      if names == nil {
+        <button class="btn-form" id="create-batch-btn" hx-post="/create-batch" hx-include="[data-new-name], [name='batch']" hx-swap="outerHTML swap:100ms transition:true">Create Batch</button>
+      } else {
+        @EditButtons(batchName)
+      }
+
+      <div  id="batch-collector">
+        <form>
+          if names != nil {
+              for i, name := range names {
+                @NameInput(name, transitionNames[i])
+              }
+          }
+          </form>
+      </div>
+      <div popover id="delete-popover">
+        @ConfirmPopover(batchName)
+      </div>
+    </section>
+  }
+}
+
+templ NewName(name string, transitionName templ.Attributes) {
+  @NameInput(name, transitionName)
+
+  <div hx-swap-oob="innerHTML:#add-name">
+    @AddNameInput()
+  </div>
+}
+
+templ AddNameInput() {
+  <label >Add Name
+    <input type="text" name="next_name" id="next_name" value="" />
+  </label>
+  <button class="btn btn-icon btn-add">
+    <svg  viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <title>Add Name</title>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M11 17C11 17.5523 11.4477 18 12 18C12.5523 18 13 17.5523 13 17V13H17C17.5523 13 18 12.5523 18 12C18 11.4477 17.5523 11 17 11H13V7C13 6.44771 12.5523 6 12 6C11.4477 6 11 6.44771 11 7V11H7C6.44772 11 6 11.4477 6 12C6 12.5523 6.44772 13 7 13H11V17Z" fill="#000000"/>
+    </svg>
+  </button>
+}
+
+
+
+templ NameInput(name string, transitionName templ.Attributes) {
+  <div class="name-wrapper" {transitionName...}>
+    <label><input id={fmt.Sprintf("input-%v", name)} type="text" name={name} value={name} data-new-name /></label>
+    <button class="btn-delete btn-icon" hx-delete="/name" hx-target="closest .name-wrapper" hx-swap="outerHTML swap:250ms transition:true">
+      <svg  viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <title>Delete</title>
+        <path d="M9.17065 4C9.58249 2.83481 10.6937 2 11.9999 2C13.3062 2 14.4174 2.83481 14.8292 4" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M20.5 6H3.49988" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M18.3735 15.3991C18.1965 18.054 18.108 19.3815 17.243 20.1907C16.378 21 15.0476 21 12.3868 21H11.6134C8.9526 21 7.6222 21 6.75719 20.1907C5.89218 19.3815 5.80368 18.054 5.62669 15.3991L5.16675 8.5M18.8334 8.5L18.6334 11.5" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M9.5 11L10 16" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M14.5 11L14 16" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+}
+
+templ ConfirmPopover(batchName string) {
+   <p>Really delete {batchName}?</p>
+    <button class="btn-danger"
+            hx-delete={fmt.Sprintf("/batch/%v", batchName)} 
+            hx-target=".content"
+            hx-select=".content"
+            hx-swap="outerHTML swap:100ms transition:true"
+            id="delete-popover-btn"
+            popovertarget="delete-popover" popovertargetaction="hide">
+            Confirm
+    </button>
+    <button popovertarget="delete-popover" popovertargetaction="hide" >Cancel</button>
+}
+// hx-swap="outerHTML transition:true"
+
+templ EditButtons(batchName string) {
+  <button class="btn-form" 
+          id="create-batch-btn"
+          hx-put="/edit-batch"
+          hx-include="[data-new-name], [name='batch']"
+          hx-swap="outerHTML swap:100ms transition:true"
+          hx-select-oob="#popover-toggle"
+          >Save Batch</button>
+  <button class="btn-form" 
+          id="popover-toggle"
+          popovertarget="delete-popover"
+          popovertargetaction="show"
+          >Delete {batchName}</button>
+}
