@@ -2,7 +2,7 @@ package web
 
 templ Message(message string, class string) {
   <div hx-swap-oob="beforeend:body">
-    <p class={class} hx-target="this" hx-swap="outerHTML" hx-trigger="revealed delay:2000ms" hx-delete="/name">{message}</p>
+    <p class={class} hx-target="this" hx-swap="outerHTML swap:250ms" hx-trigger="revealed delay:2000ms" hx-delete="/name">{message}</p>
   </div>
 }
 

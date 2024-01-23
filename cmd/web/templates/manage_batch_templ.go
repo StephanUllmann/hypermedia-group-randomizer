@@ -118,7 +118,7 @@ func BatchSearch(batchName string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" name=\"batch\" id=\"new-batch\" placeholder=\"Search or create Batch...\" pattern=\"((wd|WD)|(wdg|WDG))\\d{3}\" hx-swap=\"outerHTML transition:true\" hx-select=\".content\" hx-get=\"/get-batch\" hx-trigger=\"search, keyup changed delay:250ms\" hx-push-url=\"true\"> <span>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" name=\"batch\" id=\"new-batch\" placeholder=\"Search or create Batch...\" pattern=\"((wd|WD)|(wdg|WDG))\\d{3}\" hx-swap=\"outerHTML transition:true\" hx-select=\".content\" hx-get=\"/get-batch\" hx-trigger=\"search, keyup changed delay:500ms\" hx-push-url=\"true\"> <span>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -442,7 +442,7 @@ func ConfirmPopover(batchName string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-target=\".content\" hx-select=\".content\" hx-swap=\"outerHTML swap:100ms transition:true\" id=\"delete-popover-btn\" popovertarget=\"delete-popover\" popovertargetaction=\"hide\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-target=\".content\" hx-select=\".content\" hx-swap=\"outerHTML swap:250ms\" id=\"delete-popover-btn\" popovertarget=\"delete-popover\" popovertargetaction=\"hide\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -486,7 +486,7 @@ func EditButtons(batchName string) templ.Component {
 			templ_7745c5c3_Var24 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button class=\"btn-form\" id=\"create-batch-btn\" hx-put=\"/edit-batch\" hx-include=\"[data-new-name], [name=&#39;batch&#39;]\" hx-swap=\"outerHTML swap:100ms transition:true\" hx-select-oob=\"#popover-toggle\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button class=\"btn-form\" id=\"create-batch-btn\" hx-put=\"/edit-batch\" hx-include=\"[data-new-name], [name=&#39;batch&#39;]\" hx-swap=\"outerHTML swap:250ms \" hx-select-oob=\"#popover-toggle\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

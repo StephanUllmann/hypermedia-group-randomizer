@@ -51,7 +51,7 @@ templ BatchSearch(batchName string) {
                 hx-swap="outerHTML transition:true"
                 hx-select=".content"
                 hx-get="/get-batch"
-                hx-trigger="search, keyup changed delay:250ms"
+                hx-trigger="search, keyup changed delay:500ms"
                 hx-push-url="true"
                 />
         <span>Format: wd012 or wdg012</span>
@@ -144,7 +144,7 @@ templ ConfirmPopover(batchName string) {
             hx-delete={fmt.Sprintf("/batch/%v", batchName)} 
             hx-target=".content"
             hx-select=".content"
-            hx-swap="outerHTML swap:100ms transition:true"
+            hx-swap="outerHTML swap:250ms"
             id="delete-popover-btn"
             popovertarget="delete-popover" popovertargetaction="hide">
             Confirm
@@ -158,7 +158,7 @@ templ EditButtons(batchName string) {
           id="create-batch-btn"
           hx-put="/edit-batch"
           hx-include="[data-new-name], [name='batch']"
-          hx-swap="outerHTML swap:100ms transition:true"
+          hx-swap="outerHTML swap:250ms "
           hx-select-oob="#popover-toggle"
           >Save Batch</button>
   <button class="btn-form" 
