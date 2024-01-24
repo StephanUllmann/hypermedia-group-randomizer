@@ -11,7 +11,8 @@ templ CreateProject() {
             hx-get="/project/q"
             hx-target="body"
             hx-swap="innerHTML transition:true"
-            hx-push-url="true">
+            hx-push-url="true"
+            hx-disabled-elt="this">
         <label>Project
           <input type="text"
                  name="project"

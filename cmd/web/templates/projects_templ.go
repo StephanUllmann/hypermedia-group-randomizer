@@ -40,7 +40,7 @@ func CreateProject() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</h1><form action=\"/project/q\" method=\"GET\" hx-get=\"/project/q\" hx-target=\"body\" hx-swap=\"innerHTML transition:true\" hx-push-url=\"true\"><label>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</h1><form action=\"/project/q\" method=\"GET\" hx-get=\"/project/q\" hx-target=\"body\" hx-swap=\"innerHTML transition:true\" hx-push-url=\"true\" hx-disabled-elt=\"this\"><label>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -144,7 +144,7 @@ func ExistingProject(batch string, project string, groups [][]string, delays [][
 			var templ_7745c5c3_Var12 string
 			templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(project)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `cmd\web\templates\projects.templ`, Line: 58, Col: 25}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `cmd\web\templates\projects.templ`, Line: 59, Col: 25}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 			if templ_7745c5c3_Err != nil {
@@ -162,7 +162,7 @@ func ExistingProject(batch string, project string, groups [][]string, delays [][
 			var templ_7745c5c3_Var14 string
 			templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(batch)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `cmd\web\templates\projects.templ`, Line: 59, Col: 21}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `cmd\web\templates\projects.templ`, Line: 60, Col: 21}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 			if templ_7745c5c3_Err != nil {
@@ -185,7 +185,7 @@ func ExistingProject(batch string, project string, groups [][]string, delays [][
 				var templ_7745c5c3_Var16 string
 				templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", i+1))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `cmd\web\templates\projects.templ`, Line: 65, Col: 68}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `cmd\web\templates\projects.templ`, Line: 66, Col: 68}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 				if templ_7745c5c3_Err != nil {
@@ -212,7 +212,7 @@ func ExistingProject(batch string, project string, groups [][]string, delays [][
 						var templ_7745c5c3_Var17 string
 						templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(name)
 						if templ_7745c5c3_Err != nil {
-							return templ.Error{Err: templ_7745c5c3_Err, FileName: `cmd\web\templates\projects.templ`, Line: 69, Col: 57}
+							return templ.Error{Err: templ_7745c5c3_Err, FileName: `cmd\web\templates\projects.templ`, Line: 70, Col: 57}
 						}
 						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 						if templ_7745c5c3_Err != nil {
@@ -230,7 +230,7 @@ func ExistingProject(batch string, project string, groups [][]string, delays [][
 						var templ_7745c5c3_Var18 string
 						templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(name)
 						if templ_7745c5c3_Err != nil {
-							return templ.Error{Err: templ_7745c5c3_Err, FileName: `cmd\web\templates\projects.templ`, Line: 71, Col: 23}
+							return templ.Error{Err: templ_7745c5c3_Err, FileName: `cmd\web\templates\projects.templ`, Line: 72, Col: 23}
 						}
 						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
 						if templ_7745c5c3_Err != nil {

@@ -4,8 +4,8 @@
   box-sizing: inherit;
 }
 :root {
-  --success: #69ff7d;
-  --error: #8d0000;
+  --success: #76ff69;
+  --error: #c20c15;
   --danger: #ff3232;
   --left-color: #f8485e;
   --right-color: #f7a400;
@@ -128,14 +128,42 @@ search form {
   font-size: 1.25rem;
   box-shadow: 2px 2px 2px var(--border);
   transform: translateY(0%);
-  transition: all 250ms ease-out;
+  transition: all 250ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  overflow: hidden;
+  cursor: pointer;
+
+  &::after {
+    content: '';
+    position: relative;
+    bottom: -24px;
+    left: -55px;
+    width: 160%;
+    height: 5px;
+    animation: shrink 2000ms linear forwards;
+    display: block;
+  }
+}
+
+@keyframes shrink {
+  from {
+    width: 160%;
+  }
+  to {
+    width: 0%;
+  }
 }
 
 .success {
   color: var(--success);
+  &::after {
+    background-color: var(--success);
+  }
 }
 .error {
   color: var(--error);
+  &::after {
+    background-color: var(--error);
+  }
 }
 
 main {
@@ -169,20 +197,34 @@ h1 {
 
 .name-wrapper {
   position: relative;
+  opacity: 1;
 }
 
+.name-wrapper.htmx-added,
+.success.htmx-added,
+.error.htmx-added {
+  opacity: 0;
+  transition: all 250ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.success.htmx-added,
+.error.htmx-added {
+  opacity: 0;
+  transform: translateY(-100%);
+  transition: all 250ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
 .name-wrapper.htmx-swapping,
 .success.htmx-swapping,
 .error.htmx-swapping {
   opacity: 0;
-  transition: all 250ms ease-out;
+  transition: all 250ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .success.htmx-swapping,
 .error.htmx-swapping {
   opacity: 0;
   transform: translateY(-100%);
-  transition: all 250ms ease-out;
+  transition: all 250ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .btn-form {

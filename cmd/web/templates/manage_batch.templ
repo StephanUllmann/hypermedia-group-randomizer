@@ -51,7 +51,7 @@ templ BatchSearch(batchName string) {
                 hx-swap="outerHTML transition:true"
                 hx-select=".content"
                 hx-get="/get-batch"
-                hx-trigger="search, keyup changed delay:500ms"
+                hx-trigger="search, keyup changed delay:750ms"
                 hx-push-url="true"
                 />
         <span>Format: wd012 or wdg012</span>
@@ -72,14 +72,14 @@ templ BatchCollector(batchName string, names []string, transitionNames []templ.A
   @Content(true, false) {
 
   <section class="content">
-      <h1 class="heading-createBatch" id="main-heading">Create Batch</h1>
+      <h1 class="heading-createBatch" id="main-heading">Manage {batchName}</h1>
       @BatchSearch(batchName)
-      <form action="/add-name" method="post" hx-swap="beforeend" hx-target="#batch-collector form" id="add-name">
+      <form action="/add-name" method="post" hx-swap="beforeend swap:250ms settle:125ms" hx-target="#batch-collector form" id="add-name">
         @AddNameInput()
       </form>
       
       if names == nil {
-        <button class="btn-form" id="create-batch-btn" hx-post="/create-batch" hx-include="[data-new-name], [name='batch']" hx-swap="outerHTML swap:100ms transition:true">Create Batch</button>
+        <button class="btn-form" id="create-batch-btn" hx-post="/create-batch" hx-include="[data-new-name], [name='batch']" hx-swap="outerHTML swap:100ms transition:true" hx-disabled-elt="this">Create Batch</button>
       } else {
         @EditButtons(batchName)
       }
@@ -145,6 +145,7 @@ templ ConfirmPopover(batchName string) {
             hx-target=".content"
             hx-select=".content"
             hx-swap="outerHTML swap:250ms"
+            hx-disabled-elt="this"
             id="delete-popover-btn"
             popovertarget="delete-popover" popovertargetaction="hide">
             Confirm
@@ -158,8 +159,9 @@ templ EditButtons(batchName string) {
           id="create-batch-btn"
           hx-put="/edit-batch"
           hx-include="[data-new-name], [name='batch']"
-          hx-swap="outerHTML swap:250ms "
+          hx-swap="outerHTML swap:250ms"
           hx-select-oob="#popover-toggle"
+          hx-disabled-elt="this"
           >Save Batch</button>
   <button class="btn-form" 
           id="popover-toggle"
