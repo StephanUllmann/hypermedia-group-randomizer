@@ -126,7 +126,7 @@ func AddAnimationDelay(group [][]string) [][]templ.Attributes {
 	for i := 0; i < maxLength; i++ {
 			for j := 0; j < len(group); j++ {
 					if i < len(group[j]) {
-							delay := (i * len(group) + j) * 7000 / totalElements
+							delay := (i * len(group) + j) *  625
 							styleString := fmt.Sprintf("animation-delay:%dms;", delay)
 							style := templ.Attributes{"style": styleString}
 							out[j][i] = style
